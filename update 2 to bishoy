@@ -1,0 +1,178 @@
+#include <iostream>
+#include <string>
+using namespace std;
+struct Time {
+    int hours;
+    int minutes;
+    int seconds;
+};
+struct movie {
+    string name;
+    Time duration;
+    float price;
+    int year;
+    string language;
+};
+struct MovieRental {
+    string title;
+    string customer;
+    int rentalPeriod;
+    float rentalFee;
+};
+const int MAX_MOVIES = 100;
+MovieRental rentedMovies[MAX_MOVIES];
+void inputmovie()
+{
+    movie m[100];
+    char choose;
+    cout << "do you want to enter movie:" << endl << "yes                             no"<<endl;
+    cin >> choose;
+    while (choose == 'y') {
+        int i = 0;
+        cout << "Enter movie name : ";
+        cin >> m[i].name;
+        cout << "Enter movie in hours : ";
+        do {
+            cin >> m[i].duration.hours;
+            if (!cin.fail())
+            {
+                cout << m[i].duration.hours << endl;
+                break;
+            }
+            else
+            {
+                cout << "invalid input" << endl;
+                cin.clear();
+                cin.ignore(1000, '\n');
+                continue;
+
+            }
+        } while (1);
+        cout << "Enter movie in minutes :";
+        do {
+            cin >> m[i].duration.minutes;
+            if (!cin.fail()) {
+                cout << m[i].duration.minutes << endl;
+                break;
+            }
+            else
+            {
+                cout << "invalid input" << endl;
+                cin.clear();
+                cin.ignore(1000, '\n');
+                continue;
+            }
+        } while (1);
+        cout << "Enter movie in seconds :"<<endl;
+        do {
+            cin >> m[i].duration.seconds;
+            if(!cin.fail())
+            {
+                cout << m[i].duration.seconds << endl;
+                break;
+            }
+            else
+            {
+                cout << "invalid input" << endl;
+                cin.clear();
+                cin.ignore(1000, '\n');
+                continue;
+            }
+        } while (1);
+        cout << "Enter movie price : ";
+
+        do {
+            cin >> m[i].price;
+            if (!cin.fail())
+            {
+                cout << m[i].price << endl;
+                break;
+            }
+            else {
+                cout << "invalid input" << endl;
+                cin.clear();
+                cin.ignore(1000, '\n');
+                continue;
+            }
+        } while (1);
+        cout << "Enter movie year : "<<endl;
+        do {
+            cin >> m[i].price;
+            if (!cin.fail())
+            {
+                cout << m[i].price << endl;
+                break;
+            }
+            else {
+                cout << "invalid input" << endl;
+                cin.clear();
+                cin.ignore(1000, '\n');
+                continue;
+            }
+        } while (1);
+        cout << "Enter movie language : "<<endl;
+        cin >> m[i].language;
+        i++;
+        cout << "added" << endl;
+        cout << "do you want to enter another movie:" << endl << "yes                            no"<<endl;
+        cin >> choose;
+    }
+}
+int main() {
+    inputmovie();
+    int numMoviesRented = 0;
+    char add;
+    cout << "do you want to add a film" << endl << "yes                            no"<<endl;
+    cin >> add;
+    while (add == 'y') {
+        int i = 0;
+        cout << "Enter the movie title: "<<endl;
+
+        cin>> rentedMovies[i].title;
+        cout << "Enter the customer name: "<<endl;
+        cin>> rentedMovies[i].customer;
+        cout << "Enter the rental period (in days): ";
+        do {
+            cin >> rentedMovies[i].rentalPeriod;
+            if (!cin.fail())
+            {
+                cout << rentedMovies[i].rentalPeriod<<endl;
+                break;
+            }
+            else {
+                cout << "invalid input" << endl;
+                cin.clear();
+                cin.ignore(1000, '\n');
+                continue;
+            }
+        } while (1);
+
+        cout << "Enter the rental fee: "<<endl;
+        do {
+            cin >> rentedMovies[i].rentalFee;
+            if (!cin.fail())
+            {
+                cout << rentedMovies[i].rentalFee<<endl;
+                break;
+            }
+            else {
+                cout << "invalid input" << endl;
+                cin.clear();
+                cin.ignore(1000, '\n');
+                continue;
+            }
+        } while (1);
+        i++;
+        numMoviesRented++;
+        cout << "do you want to add a film" << endl << "yes                            no"<<endl;
+        cin >> add;
+    }
+    for (int i = 0; i <= numMoviesRented; i++) {
+        cout << "Movie #" << i + 1 << endl;
+        cout << "Title: " << rentedMovies[i].title << endl;
+        cout << "Customer: " << rentedMovies[i].customer << endl;
+        cout << "Rental period: " << rentedMovies[i].rentalPeriod << " days" << endl;
+        cout << "Rental fee: $" << rentedMovies[i].rentalFee << endl;
+        cout << endl;
+    }
+}
