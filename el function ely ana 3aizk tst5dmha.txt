@@ -1,0 +1,25 @@
+#include <iostream>
+#include<cctype>
+using namespace std;
+int main()
+{
+    int n;
+    do {
+        cin >> n;
+        if (!cin.fail())
+        {
+            cout << n << endl;
+            break;
+        }
+        else
+        {
+            cout << "invalid input"<<endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
+            continue;
+
+        }
+
+
+    } while (1);
+}
