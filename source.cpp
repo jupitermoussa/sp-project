@@ -6,7 +6,11 @@
 using namespace std;
 int numMoviesRented = 0;
 const int MAX_MOVIES = 100;
+int day, month, year;
 int returnDate(int rentalPeriod);
+int dayenter();
+int monthenter();
+int yearenter();
 struct Time {
     int hours;
     int minutes;
@@ -105,8 +109,6 @@ void inputmovie(int n)
 {
     for (int i = 0; i < n; i++)
     {
-        {
-            int i = 0;
             cout << "Enter movie name : ";
             cin.ignore();
             cin >> m[i].name;
@@ -174,59 +176,15 @@ void inputmovie(int n)
             } while (true);
             cout << "Enter movie language : ";
             cin >> m[i].language;
-            cout << "added" << endl;
-        }
+            cout << "added" << endl;   
     }
 }
 int returnDate(int rentalPeriod)
 {
-    int day, month, year;
     cout << "Enter Today's Date" << endl << "(Date, Month then Year):\n";
-    do {
-        cin >> day;
-        if (cin.fail()||day>31)
-        {
-
-            cout << "invalid input" << endl;
-            cin.clear();
-            cin.ignore(1000, '\n');
-            continue;
-        }
-        else
-        {
-            break;
-        }
-    } while (1);
-    do {
-        cin >> month;
-        if (cin.fail()||month>12)
-        {
-
-            cout << "invalid input" << endl;
-            cin.clear();
-            cin.ignore(1000, '\n');
-            continue;
-        }
-        else
-        {
-            break;
-        }
-    } while (1);
-    do {
-        cin >> year;
-        if (cin.fail())
-        {
-
-            cout << "invalid input" << endl;
-            cin.clear();
-            cin.ignore(1000, '\n');
-            continue;
-        }
-        else
-        {
-            break;
-        }
-    } while (1);
+    day = dayenter();
+    month = monthenter();
+    year = yearenter();
     if (rentalPeriod == 30)
         month++;
     if (rentalPeriod == 365)
@@ -305,4 +263,80 @@ int returnDate(int rentalPeriod)
         }
     }
     cout << "The Return Date is:\n" << day << "/" << month << "/" << year;   
+}
+int monthenter()
+{
+    do {
+        cin >> month;
+        if (cin.fail() || month > 12)
+        {
+
+            cout << "invalid input" << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
+            continue;
+        }
+        else
+        {
+            return month;
+            break;
+        }
+    } while (true);
+}
+int dayenter()
+{
+    do {
+        cin >> day;
+        if (cin.fail() || day > 31)
+        {
+            cout << "invalid input" << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
+            continue;
+        }
+        else
+        {
+            return day;
+            break;
+        }
+    } while (1);
+}
+int yearenter()
+{
+
+    if (((month == 4 || month == 6 || month == 9 || month == 11) && day > 30))
+    {
+        cout << "invalid day input" << endl;
+        day = dayenter();
+    }
+    else if (((year % 4 == 0) && ((year % 400 == 0) || (year % 100 != 0))) && month == 2 && day > 29)
+    {
+
+        cout << "invalid day input" << endl;
+        day = dayenter();
+
+    }
+    else if (month == 2 && day > 28)
+    {
+
+        cout << "invalid day input" << endl;
+        day = dayenter();
+
+    }
+    cin >> year;
+    do {
+
+        if (cin.fail())
+        {
+            cout << "invalid input" << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
+            continue;
+        }
+        else
+        {
+            return year;
+            break;
+        }
+    } while (1);
 }
