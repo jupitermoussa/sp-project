@@ -181,25 +181,10 @@ void inputmovie(int n)
 int returnDate(int rentalPeriod)
 {
     int day, month, year;
-    cout << "enter todays date" << endl << "date, month then year:\n";
+    cout << "Enter Today's Date" << endl << "(Date, Month then Year):\n";
     do {
         cin >> day;
-        if (cin.fail())
-        {
-            cout << "invalid input" << endl;
-            cin.clear();
-            cin.ignore(1000, '\n');
-            continue;
-        }
-        else
-        {
-            break;
-        }
-    } while (1);
-    do
-    {
-        cin >> month;
-        if (cin.fail())
+        if (cin.fail()||day>31)
         {
 
             cout << "invalid input" << endl;
@@ -212,8 +197,22 @@ int returnDate(int rentalPeriod)
             break;
         }
     } while (1);
-    do
-    {
+    do {
+        cin >> month;
+        if (cin.fail()||month>12)
+        {
+
+            cout << "invalid input" << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
+            continue;
+        }
+        else
+        {
+            break;
+        }
+    } while (1);
+    do {
         cin >> year;
         if (cin.fail())
         {
@@ -227,7 +226,7 @@ int returnDate(int rentalPeriod)
         {
             break;
         }
-    } while (true);
+    } while (1);
     if (rentalPeriod == 30)
         month++;
     if (rentalPeriod == 365)
@@ -305,5 +304,5 @@ int returnDate(int rentalPeriod)
             month = month - 12;
         }
     }
-    cout << day << "/" << month << "/" << year;
+    cout << "The Return Date is:\n" << day << "/" << month << "/" << year;   
 }
