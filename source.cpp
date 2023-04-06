@@ -3,14 +3,12 @@
 #include<string.h>
 #include <vector>
 #include <cctype>
+#include<stdio.h>
 using namespace std;
+using std::cin, std::cout, std::string, std::endl;
 int numMoviesRented = 0;
 const int MAX_MOVIES = 100;
-int day, month, year;
-int returnDate(int rentalPeriod);
-int dayenter();
-int monthenter();
-int yearenter();
+int day, month, year, day_return, month_return, year_return;
 struct Time {
     int hours;
     int minutes;
@@ -22,20 +20,44 @@ struct movie {
     int year;
     string language;
 }m[100];
-void inputmovie(int n);
+struct MovieRental {
+    string title;
+    string customer;
+    int rentalPeriod;
+    float rentalFee;
+} rentedMovies[MAX_MOVIES];
 struct User {
     string name;
     int id;
 }user, users[100];
+int returnDate(int rentalPeriod);
+int dayenter();
+int monthenter();
+int yearenter();
+int over_due_fn(int dof[3], int dof2[3], double price);
+void rent_movie(int n);
+int addid();
+string addname();
+void add_new_user(int n);
+void inputmovie(int n);
+void movie_rented();
+void display_all(int n);
+int main() {
+}
+void display_all(int n) {      //to display all users data
+    for (int i = 0; i < n; i++) {
+        cout << "Name : " << users[i].name << endl;
+        cout << "ID : " << users[i].id << endl;
+        cout << "____________" << endl;
+    }
+}
 void rent_movie(int n) {
     for (int i = 0; i < n; i++)
     {
         cout << "Enter the movie title you want to rent: ";
-        cin >> rentedMovies[i].title;
-
+        getline(cin, rentedMovies[i].title);
         cout << "Enter the customer name: ";
-        cin >> rentedMovies[i].customer;
-
+        getline(cin, rentedMovies[i].customer);
         cout << "Enter the rental period (in days): ";
         do
         {
@@ -53,24 +75,24 @@ void rent_movie(int n) {
             }
         } while (true);
         cout << "Enter the rental fee:";
-        cin >> rentedMovies[i].rentalFee;
+        do
+        {
+            cin >> rentedMovies[i].rentalFee;
+            if (cin.fail())
+            {
+                cout << "invalid input" << endl;
+                cin.clear();
+                cin.ignore(1000, '\n');
+                continue;
+            }
+            else
+            {
+                break;
+            }
+        } while (true);
         numMoviesRented++;
     }
 }
-void add_new_user(int n);
-void display_all(int n) {      //to display all users data
-    for (int i = 0; i < n; i++) {
-        cout << "Name : " << users[i].name << endl;
-        cout << "ID : " << users[i].id << endl;
-        cout << "____________" << endl;
-    }
-}
-struct MovieRental {
-    string title;
-    string customer;
-    int rentalPeriod;
-    float rentalFee;
-} rentedMovies[MAX_MOVIES];
 void movie_rented() {
     for (int i = 0; i < numMoviesRented; i++) {
         cout << "Movie #" << i + 1 << endl;
@@ -81,102 +103,77 @@ void movie_rented() {
         cout << endl;
     }
 };
-int main() {
-    int n_of_users = 0; // to be used as a number of display
-    char ch;         //to continue or stop
-    int i = 0; //counter for copying one user data to a bigger struct
-    do {
-        users[i] = add_new_user();  // to transfer one user data into bigger structure
-        i++;              // to continue transferring 
-        n_of_users++;       // that's one user in
-        std::cout << "Do you wish to add more user? (Y/N)" << endl;
-        cin >> ch;
-        cin.ignore();
-
-    } while (ch == 'y' || ch == 'Y');
-    display_all(n_of_users);
-}
-User add_new_user() {  //add one user at a time function
-    cout << "Enter user name: " << endl;
-    cin.ignore();
-    cin >> user.name;
-    cout << "Enter user id: " << endl;
-    cin.ignore();
-    cin >> user.id;
-    return user;         //to transfer one user data to another big structure
-}
 void inputmovie(int n)
 {
     for (int i = 0; i < n; i++)
     {
-            cout << "Enter movie name : ";
-            cin.ignore();
-            cin >> m[i].name;
-            cout << "Enter movie in hours : ";
-            do {
-                cin >> m[i].duration.hours;
-                if (cin.fail())
-                {
-                    cout << "invaild input" << endl;
-                    cin.clear();
-                    cin.ignore(10000, '\n');
-                    continue;
-                }
-                else
-                {
-                    break;
-                }
-            } while (true);
-            cout << "Enter movie in minutes :";
-            do {
-                cin >> m[i].duration.minutes;
-                if (cin.fail())
-                {
-                    cout << "invalid input" << endl;
-                    cin.clear();
-                    cin.ignore(1000, '\n');
-                    continue;
-                }
-                else
-                {
-                    break;
-                }
-            } while (1);
-            cout << "Enter movie price : ";
-            do
+        cout << "Enter movie name : ";
+        getline(cin, m[i].name);
+        cout << "Enter movie in hours : ";
+        do {
+            cin >> m[i].duration.hours;
+            if (cin.fail())
             {
-                cin >> m[i].price;
-                if (cin.fail())
-                {
-                    cout << "invalid input" << endl;
-                    cin.clear();
-                    cin.ignore(1000, '\n');
-                    continue;
-                }
-                else
-                {
-                    break;
-                }
-            } while (true);
-            cout << "Enter movie year : ";
-            do
+                cout << "invaild input" << endl;
+                cin.clear();
+                cin.ignore(10000, '\n');
+                continue;
+            }
+            else
             {
-                cin >> m[i].year;
-                if (cin.fail())
-                {
-                    cout << "invalid input" << endl;
-                    cin.clear();
-                    cin.ignore(1000, '\n');
-                    continue;
-                }
-                else
-                {
-                    break;
-                }
-            } while (true);
-            cout << "Enter movie language : ";
-            cin >> m[i].language;
-            cout << "added" << endl;   
+                break;
+            }
+        } while (true);
+        cout << "Enter movie in minutes :";
+        do {
+            cin >> m[i].duration.minutes;
+            if (cin.fail())
+            {
+                cout << "invalid input" << endl;
+                cin.clear();
+                cin.ignore(1000, '\n');
+                continue;
+            }
+            else
+            {
+                break;
+            }
+        } while (1);
+        cout << "Enter movie price : ";
+        do
+        {
+            cin >> m[i].price;
+            if (cin.fail())
+            {
+                cout << "invalid input" << endl;
+                cin.clear();
+                cin.ignore(1000, '\n');
+                continue;
+            }
+            else
+            {
+                break;
+            }
+        } while (true);
+        cout << "Enter movie year : ";
+        do
+        {
+            cin >> m[i].year;
+            if (cin.fail())
+            {
+                cout << "invalid input" << endl;
+                cin.clear();
+                cin.ignore(1000, '\n');
+                continue;
+            }
+            else
+            {
+                break;
+            }
+        } while (true);
+        cout << "Enter movie language : ";
+        getline(cin, m[i].language);
+        cout << "added" << endl;
     }
 }
 int returnDate(int rentalPeriod)
@@ -262,7 +259,7 @@ int returnDate(int rentalPeriod)
             month = month - 12;
         }
     }
-    cout << "The Return Date is:\n" << day << "/" << month << "/" << year;   
+    cout << "The Return Date is:\n" << day << "/" << month << "/" << year;
 }
 int monthenter()
 {
@@ -339,4 +336,103 @@ int yearenter()
             break;
         }
     } while (1);
+}
+void add_new_user(int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        users[i].name = addname();
+        users[i].id = addid();
+    }
+}
+int addid()
+{
+    int x;
+    cout << "Enter user id: " << endl;
+    do {
+        cin >> x;
+        if (cin.fail())
+        {
+            cout << "invalid input" << endl;
+            cin.clear();
+            cin.ignore(10000, '\n');
+            continue;
+        }
+        else
+        {
+            break;
+        }
+    } while (1);
+    return x;
+}
+string addname()
+{
+    string s;
+    cout << "Enter user name: " << endl;
+    getline(cin, s);
+    return s;
+}
+int over_due_fn(int dof[3], int dof2[3], double price) //  index[0] is the day and index[1]is the month  and index [2] is the  yerar
+{
+    double period;// period is the period that the user had the film with him
+    double  overdue;
+    if (dof[1] == dof2[1] && abs(dof2[0] - dof[0]) <= 7 && dof[2] == dof2[2])
+    {
+        cout << "there is no overdue fee, thanks for chosing our movie store";
+    }
+    else
+    {
+        if (dof[2] == dof2[2] && dof[1] == dof2[1]) //check if the user returned the film in the same month and same year
+        {
+            period = (dof2[0] - dof[0]) - 7;
+            overdue = .1 * price * period;
+            cout << "you should have returned the film scince " << period << " dayes ago, so your fee is " << overdue;
+            return overdue;
+        }
+        else if (dof[2] == dof2[2] && (dof2[1] - dof[1]) == 1)//check if the user returned the film in diffrent month and same year
+            //all  monthes casee is under this line
+        {
+            switch (dof[1])
+            {
+            case(1):
+            case(3):
+            case(5):
+            case(7):
+            case(8):
+            case(10):
+                period = abs(((31 - dof[0]) + dof2[0])) - 7;
+                overdue = .1 * price * period;
+                cout << "you should have returned the film scince " << period << " dayes ago, so your fee is " << overdue;
+                break;
+            case(2):
+                period = abs(((28 - dof[0]) + dof2[0])) - 7;
+                overdue = .1 * price * period;
+                cout << "you should have returned the film scince " << period << " dayes ago, so your fee is " << overdue;
+                break;
+            case(4):
+            case(6):
+            case(9):
+            case(11):
+                period = abs(((30 - dof[0]) + dof2[0])) - 7;
+                overdue = .1 * price * period;
+                cout << "you should have returned the film scince " << period << " dayes ago, so your fee is " << overdue;
+                break;
+                return overdue;
+            }
+        }
+        else if (dof[2] != dof2[2] && dof[1] == 12 && dof2[1] == 1)
+        {
+            period = abs(((31 - dof[0]) + dof2[0])) - 7;
+            overdue = .1 * price * period;
+            cout << "you should have returned the film scince " << period << " dayes ago, so your fee is " << overdue;
+            return overdue;
+        }
+        else
+        {
+            cout << "you have been so much late so You will pay 10 times the original price ";
+            overdue = 10 * price;
+            cout << overdue;
+            return overdue;
+        }
+    }
 }
